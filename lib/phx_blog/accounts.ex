@@ -101,4 +101,20 @@ defmodule PhxBlog.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  def authenticate_user(email, plain_text_password) do
+    query = from(u in User, where: u.email == ^email)
+
+    case Repo.one(query) do
+      nil ->
+        {:error, :invalid_credentials}
+
+      user ->
+        if Bcrypt.verify_pass(plain_text_password, user.password_hash) do
+          {:ok, user}
+        else
+          {:error, :invalid_credentials}
+        end
+    end
+  end
 end
