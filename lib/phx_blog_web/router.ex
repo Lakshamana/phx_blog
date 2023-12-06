@@ -18,7 +18,7 @@ defmodule PhxBlogWeb.Router do
 
     post "/users", UserController, :create
     post "/login", SessionController, :login
-    get "/logouut", SessionController, :logout
+    get "/logout", SessionController, :logout
   end
 
   scope "/api", PhxBlogWeb do
