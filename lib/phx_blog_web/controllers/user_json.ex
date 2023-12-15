@@ -23,7 +23,6 @@ defmodule PhxBlogWeb.UserJSON do
     %{
       id: user.id,
       email: user.email,
-      password_hash: user.password_hash
     }
   end
 

@@ -4,6 +4,7 @@ defmodule PhxBlog.Accounts do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Repo
   alias PhxBlog.Repo
 
   alias PhxBlog.Accounts.User
@@ -116,5 +117,23 @@ defmodule PhxBlog.Accounts do
           {:error, :invalid_credentials}
         end
     end
+  end
+
+  @doc """
+  Gets a single user by email address.
+
+  Returns `nil` if the User does not exist or the user itself.
+
+  ## Examples
+
+      iex> get_user("test@user.test")
+      %User{}
+
+      iex> get_user("test@user.test")
+      nil
+
+  """
+  def get_user_by_email(email) do
+    Repo.one(from(u in User, where: u.email == ^email))
   end
 end

@@ -12,11 +12,28 @@ defmodule PhxBlogWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
+    # require IEx; IEx.pry
     with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/users/#{user}")
       |> render(:show, user: user)
+    end
+  end
+
+  def check_email(conn, %{"email" => email}) do
+    user = Accounts.get_user_by_email(email)
+
+    case user do
+      nil ->
+        conn
+        |> put_status(:ok)
+        |> json(%{msg: "Email available"})
+
+      _ ->
+        conn
+        |> put_status(:conflict)
+        |> json(%{msg: "Email already exists"})
     end
   end
 

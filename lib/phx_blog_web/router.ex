@@ -14,16 +14,17 @@ defmodule PhxBlogWeb.Router do
   end
 
   scope "/api", PhxBlogWeb do
-    pipe_through [:api, :ensure_auth]
+    pipe_through [:api, :auth]
 
     post "/users", UserController, :create
     post "/login", SessionController, :login
-    get "/logout", SessionController, :logout
+    get "/check-email", UserController, :check_email
   end
 
   scope "/api", PhxBlogWeb do
     pipe_through [:api, :auth, :ensure_auth]
 
+    get "/logout", SessionController, :logout
     resources "/users", UserController, except: [:new, :edit]
   end
 

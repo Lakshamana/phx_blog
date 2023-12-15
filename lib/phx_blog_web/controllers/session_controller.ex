@@ -5,13 +5,16 @@ defmodule PhxBlogWeb.SessionController do
 
   alias PhxBlog.{Accounts, Accounts.Guardian}
 
-  def login(conn, %{email: email, password: password}) do
-    case Accounts.authenticate_user(email, password) do  # calling model layer
+  def login(conn, %{"email" => email, "password" => password}) do
+    # calling model layer
+    case Accounts.authenticate_user(email, password) do
       {:ok, user} ->
         {:ok, token, _claims} = Guardian.encode_and_sign(user)
+
         conn
         |> put_status(:ok)
         |> render(:user_token, user: user, token: token)
+
       {:error, _reason} ->
         conn
         |> put_status(:unauthorized)
