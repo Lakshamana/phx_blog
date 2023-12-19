@@ -8,10 +8,6 @@ defmodule PhxBlogWeb.SessionJSON do
     %{data: data(user, token)}
   end
 
-  def render(template, _assigns) do
-    %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
-  end
-
   defp data(%User{} = user, token) do
     %{
       id: user.id,

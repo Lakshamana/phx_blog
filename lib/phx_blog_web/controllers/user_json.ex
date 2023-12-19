@@ -19,10 +19,24 @@ defmodule PhxBlogWeb.UserJSON do
     %{data: data(user, token)}
   end
 
+  def errors(%{errors: payload}), do: payload
+
+  def email_already_exists(_) do
+    %{error: "Email already exists"}
+  end
+
+  def email_available(_) do
+    %{error: "Email available"}
+  end
+
+  def user_not_found(_) do
+    %{error: "User not found"}
+  end
+
   defp data(%User{} = user) do
     %{
       id: user.id,
-      email: user.email,
+      email: user.email
     }
   end
 

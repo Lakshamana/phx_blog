@@ -26,30 +26,23 @@ defmodule PhxBlog.Accounts.User do
     end
   end
 
-  defp check_email(email) do
-    # require IEx; IEx.pry
-    email |> String.match?(~r/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/m)
+  def validate_email(email) do
+    if email |> String.match?(~r/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/m),
+      do: :ok,
+      else: {:error, "not a valid email address"}
   end
 
-  def validate_email(changeset) do
-    # require IEx; IEx.pry
-
-    case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{email: email}} ->
-        check_email(email) && changeset || add_error(changeset, :email, "'#{email}' is not a valid email address")
-
-      _ ->
-        changeset
-    end
+  def validate_password(password) do
+    if password |> String.match?(~r/^[a-zA-Z0-9]*$/),
+      do: :ok,
+      else: {:error, "password must be alphanumeric"}
   end
 
   @doc false
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:email, :password])
-    |> validate_required([:email, :password])
     |> unique_constraint(:email)
     |> password_hash()
-    |> validate_email()
   end
 end

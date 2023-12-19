@@ -17,6 +17,7 @@ defmodule PhxBlogWeb.Router do
     pipe_through [:api, :auth]
 
     post "/users", UserController, :create
+    patch "/users/:id", UserController, :update
     post "/login", SessionController, :login
     get "/check-email", UserController, :check_email
   end
@@ -25,7 +26,7 @@ defmodule PhxBlogWeb.Router do
     pipe_through [:api, :auth, :ensure_auth]
 
     get "/logout", SessionController, :logout
-    resources "/users", UserController, except: [:new, :edit]
+    resources "/users", UserController, except: [:create]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
