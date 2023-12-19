@@ -4,8 +4,8 @@ defmodule PhxBlogWeb.UserController do
   alias PhxBlog.Accounts
   alias PhxBlog.Accounts.User
 
-  plug :check_email_plug when action in [:update]
   plug :check_user_exists when action in [:show, :update, :delete]
+  plug :check_email_plug when action in [:update]
 
   action_fallback PhxBlogWeb.FallbackController
 
